@@ -1,0 +1,16 @@
+{
+  "name": "@max_feige/canvas-utils",
+  "version": "0.0.1",
+  "description": "Canvas utilities for personal projects",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "docs": "typedoc"
+  },
+  "author": "Max Feige",
+  "license": "ISC",
+  "devDependencies": {
+    "typedoc": "^0.24.7"
+  }
+}
