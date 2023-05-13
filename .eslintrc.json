@@ -1,0 +1,106 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "overrides": [
+        {
+            //'Static' classes (classes without non-static fields).  Wish there was a way to enforce no non-static
+            "files": [
+                "src/math/utility.ts"
+            ],
+            "rules": {
+                "@typescript-eslint/naming-convention": [
+                    "error",
+                    {
+                        "selector": "method",
+                        "format": [
+                            "PascalCase",
+                            "camelCase"
+                        ],
+                        "modifiers": [
+                            "static"
+                        ],
+                        "leadingUnderscore": "allow"
+                    }
+                ]
+            }
+        }
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "indent": [
+            "error",
+            "tab"
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "@typescript-eslint/no-empty-function": "warn",
+        "@typescript-eslint/naming-convention": [
+            "error",
+            {
+                "selector": "class",
+                "format": [
+                    "PascalCase"
+                ]
+            },
+            {
+                "selector": "method",
+                "format": [
+                    "camelCase"
+                ],
+                "leadingUnderscore": "allow"
+            },
+            {
+                "selector": "method",
+                "format": [
+                    "PascalCase"
+                ],
+                "modifiers": [
+                    "static"
+                ],
+                "leadingUnderscore": "allow"
+            },
+            {
+                "selector": "property",
+                "modifiers": [
+                    "public"
+                ],
+                "format": [
+                    "snake_case"
+                ]
+            },
+            {
+                "selector": "property",
+                "modifiers": [
+                    "private"
+                ],
+                "format": [
+                    "camelCase"
+                ],
+                "leadingUnderscore": "allow"
+            }
+        ]
+    }
+}
