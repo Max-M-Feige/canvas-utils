@@ -13,14 +13,15 @@ const square = {
 	speed: 100, // pixels per second
 };
 
-function updateCanvas(deltaTime: number) {
+function updateCanvas(deltaTime: number) : void
+{
 
 
 }
 
 
 let prevFrameTime = Date.now();
-function canvasLoop()
+function canvasLoop() : void
 {
 	const now = Date.now();
 	const dt = (now-prevFrameTime)/1000;

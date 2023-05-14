@@ -38,15 +38,15 @@ export class TransformMatrix2D
 
 	//#region POSITION
 
-	private onSetPositionX(value: number)
+	private onSetPositionX(value: number): void
 	{
 		this.values[2] = value;
 	}
-	private onSetPositionY(value: number)
+	private onSetPositionY(value: number): void
 	{
 		this.values[5] = value;
 	}
-	private updateLinkedPosition()
+	private updateLinkedPosition(): void
 	{
 		this._position.x = this.values[2];
 		this._position.y = this.values[5];
@@ -65,7 +65,7 @@ export class TransformMatrix2D
 	//#endregion
 	//#region ROTATION
 	//Updates the rotation value.  Called when rotation is changed elsewhere in code
-	private updateLinkedRotation(value: number)
+	private updateLinkedRotation(value: number): void
 	{
 		this._rotation = value;
 	}
@@ -99,7 +99,7 @@ export class TransformMatrix2D
 		return new Vector2(Math.sqrt(this.values[0] * this.values[0] + this.values[1] * this.values[1]),
 			Math.sqrt(this.values[3] * this.values[3] + this.values[4] * this.values[4]));
 	}
-	private onSetScaleX(x: number)
+	private onSetScaleX(x: number): void
 	{
 		let currentX = this._scale.x;
 		const currentRotation = this.rotation;
@@ -112,7 +112,7 @@ export class TransformMatrix2D
 		this.values[0] *= x / currentX;
 		this.values[1] *= x / currentX;
 	}
-	private onSetScaleY(y: number)
+	private onSetScaleY(y: number): void
 	{
 		let currentY = this._scale.x;
 		const currentRotation = this.rotation;
@@ -159,7 +159,7 @@ export class TransformMatrix2D
  * @param pos - The position for the transformation matrix.
  * @returns A new TransformMatrix2D.
  */
-	static FromPosition(pos: Vector2)
+	static FromPosition(pos: Vector2): TransformMatrix2D
 	{
 		return new TransformMatrix2D(1, 0, pos.x, 0, 1, pos.y, 0, 0, 1);
 	}
@@ -168,7 +168,7 @@ export class TransformMatrix2D
  * @param theta - The rotation angle in radians.
  * @returns A new TransformMatrix2D.
  */
-	static FromRotation(theta: number)
+	static FromRotation(theta: number): TransformMatrix2D
 	{
 		const cos = Math.cos(theta);
 		const sin = Math.sin(theta);
@@ -180,7 +180,7 @@ export class TransformMatrix2D
    * @param theta - The rotation angle in degrees.
    * @returns A new TransformMatrix2D.
    */
-	static FromRotationDegrees(theta: number)
+	static FromRotationDegrees(theta: number): TransformMatrix2D
 	{
 		return TransformMatrix2D.FromRotation(theta * Math.PI / 180);
 	}
@@ -190,7 +190,7 @@ export class TransformMatrix2D
    * @param scale - The scale for the transformation matrix. It can be a number or a Vector2.
    * @returns A new TransformMatrix2D.
    */
-	static FromScalar(scale: number | Vector2)
+	static FromScalar(scale: number | Vector2): TransformMatrix2D
 	{
 		if (typeof scale === "number")
 		{
@@ -206,7 +206,7 @@ export class TransformMatrix2D
  * @param subject - The matrix to which the transformation is applied.
  * @returns A new TransformMatrix2D that is the result of the transformation.
  */
-	static Apply(transform: TransformMatrix2D, subject: TransformMatrix2D)
+	static Apply(transform: TransformMatrix2D, subject: TransformMatrix2D): TransformMatrix2D
 	{
 		const m1 = transform.values;
 		const m2 = subject.values;
@@ -222,12 +222,12 @@ export class TransformMatrix2D
 			m1[6] * m2[2] + m1[7] * m2[5] + m1[8] * m2[8]);
 	}
 	//#endregion
-  
+
 	/**
-     * Create an identity transformation matrix.
-     * @returns A New identity TransformMatrix2D.
-     */
-	static Identity()
+	 * Create an identity transformation matrix.
+	 * @returns A New identity TransformMatrix2D.
+	 */
+	static Identity(): TransformMatrix2D
 	{
 		return new TransformMatrix2D(1, 0, 0, 0, 1, 0, 0, 0, 1);
 	}

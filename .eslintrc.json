@@ -56,7 +56,9 @@
             "error",
             "always"
         ],
+        "@typescript-eslint/explicit-function-return-type": "error",
         "@typescript-eslint/no-empty-function": "warn",
+        "brace-style": ["error","allman", {"allowSingleLine": true}],
         "@typescript-eslint/naming-convention": [
             "error",
             {

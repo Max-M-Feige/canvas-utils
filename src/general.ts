@@ -25,14 +25,14 @@ export class CanvasState
 
 	}
 
-	handleEvents(events: CanvasEvent[])
+	handleEvents(events: CanvasEvent[]) : void
 	{
 		for(const event of events)
 		{
 			this.eventHandler(event);
 		}
 	}
-	handleUpdate(dt: number)
+	handleUpdate(dt: number) : void
 	{
 		this.updateFunction(dt);
 	}
@@ -68,7 +68,7 @@ export class CanvasManager
 		this.ctx = maybe_ctx;
 		this.camera = new Camera(canvas.width/2,canvas.height/2,canvas.width,canvas.height);
 	}
-	public update()
+	public update() : void
 	{
 		const deltaTime = Date.now() - this.prevFrameStart;
 		if(this.state !== null)
@@ -77,13 +77,14 @@ export class CanvasManager
 			this.state.handleUpdate(deltaTime);
 		}
 	}
-	public addEvent(event: CanvasEvent)
+	public addEvent(event: CanvasEvent) : void
 	{
 		this.unhandeledEvents.push(event);
 	}
-	public init()
+	public init() : void
 	{
-		this.canvas.addEventListener("mousedown",(event: MouseEvent) => {
+		this.canvas.addEventListener("mousedown",(event: MouseEvent) => 
+		{
 			// this.unhandeledEvents.push(new CanvasMouseE(event,this));
 		});
 	}
@@ -98,7 +99,7 @@ export class CanvasManager
 	{
 		return [x - this.camera.x, y - this.camera.y];
 	}
-	public windowSpaceToWorldSpace(x: number, y: number)
+	public windowSpaceToWorldSpace(x: number, y: number) : [number,number]
 	{
 		return this.canvasSpaceToWorldSpace(...this.windowSpaceToCanvasSpace(x,y));
 	}

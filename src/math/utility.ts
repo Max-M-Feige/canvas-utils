@@ -1,20 +1,7 @@
 export class MathU
 {
-	constructor()
+	static clamp(value: number, min: number, max: number): number
 	{
-
-	}
-	static clamp(value: number, max: number, min: number)
-	{
-		return Math.max(max,Math.min(value,min));
-	}
-	nonstatic() : number
-	{
-		return 3;
+		return Math.max(min, Math.min(value, max));
 	}
 }
-
-const m = new MathU();
-
-
-console.log(m.nonstatic());
