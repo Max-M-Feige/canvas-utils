@@ -3,7 +3,7 @@ name: Generate TSDocs adn deploy to github pages
 on:
   push:
     branches:
-      -main
+      -master
 
 jobs:
   build:
