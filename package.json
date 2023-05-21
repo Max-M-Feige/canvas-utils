@@ -3,12 +3,14 @@
   "version": "0.0.1",
   "description": "Canvas utilities for personal projects",
   "main": "dist/main.js",
+  "types": "dist/main.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "jest",
     "lint": "eslint .",
     "docs": "typedoc",
-    "full-check": "npm run lint && npm run test && npm run build"
+    "start": "npm run build && node .",
+    "full-check": "npm run lint && npm run test && npm run build && npm run docs"
   },
   "author": "Max Feige",
   "license": "ISC",

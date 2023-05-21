@@ -3,7 +3,8 @@
     "entryPointStrategy": "expand",
     "out": "docs",
     "name": "My Project Documentation",
-    "exclude": ["**/node_modules/**"],
+    "exclude": ["dist","coverage","**/node_modules/**","**/*.test.ts","**/*.spec.ts"],
     "excludePrivate": true,
+    "disableSources": true,
   }
   

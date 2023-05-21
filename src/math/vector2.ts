@@ -5,8 +5,6 @@ import { MathU } from "./utility";
  */
 export class Vector2
 {
-	private static defaultTolerance = 0.0001;
-
 	/**
 	 * Internal X Coordinate
 	 */
@@ -246,10 +244,10 @@ export class Vector2
 	/**
 	 * Checks if this vector is equal to another vector within a certain tolerance
 	 * @param {Vector2} other - The other vector
-	 * @param {number} [tolerance=Vector2.defaultTolerance] - The tolerance for the comparison
+	 * @param {number} [tolerance=MathU.DefaultErrorMargin] - The tolerance for the comparison
 	 * @returns {boolean} True if the vectors are equal within the tolerance, false otherwise
 	 */
-	equals(other: Vector2, tolerance: number = Vector2.defaultTolerance): boolean
+	equals(other: Vector2, tolerance: number = MathU.DefaultErrorMargin): boolean
 	{
 		return (
 			Math.abs(this.x - other.x) <= tolerance &&
@@ -532,10 +530,10 @@ export class Vector2
 	 * Checks if two vectors are equal within a tolerance.
 	 * @param {Vector2} v1 - The first vector.
 	 * @param {Vector2} v2 - The second vector.
-	 * @param {number} tolerance - The tolerance for equality.
+	 * @param {number} [tolerance=MathU.DefaultErrorMargin] - The tolerance for equality.
 	 * @returns {boolean} True if the vectors are equal within the tolerance, false otherwise.
 	 */
-	static Equals(v1: Vector2, v2: Vector2, tolerance: number = Vector2.defaultTolerance): boolean
+	static Equals(v1: Vector2, v2: Vector2, tolerance: number = MathU.DefaultErrorMargin): boolean
 	{
 		return v1.equals(v2, tolerance);
 	}

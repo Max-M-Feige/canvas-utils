@@ -652,7 +652,6 @@ describe("Random Generation Should Make Sense For In Circles", () =>
 	it("Should all have magnitude <= 1", () =>
 	{
 		expect(in_circ_vectors.some((vec: Vector2) => vec.lengthSq() > 1.0)).toBe(false);
-		console.log(in_circ_vectors.filter( (x) => x.lengthSq() > 1.0)[0]);
 	});
 	it("Should have some with high positive values", () =>
 	{
