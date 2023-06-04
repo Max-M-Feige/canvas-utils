@@ -184,10 +184,10 @@ export class TransformMatrix2D
 		this.updateLinkedScale(this.calculateScale());
 	}
 	/**
-	Calculates the inverse of this transform.
+	Calculates the inverse of this transform.  To invert in place see {@link invert}
 	@returns {TransformMatrix2D} The inverse of the current transform matrix.
 	*/
-	public getInverse(): TransformMatrix2D
+	public inverse(): TransformMatrix2D
 	{
 		const A: number = this.values[4] * this.values[8] - this.values[5] * this.values[7];
 		const B: number = this.values[5] * this.values[6] - this.values[3] * this.values[8];
@@ -213,7 +213,7 @@ export class TransformMatrix2D
 	}
 
 	/**
-	 * Modifies current transform to be its inverse
+	 * Modifies current transform to be its inverse.  To get inverse without changing source see {@link inverse}
 	 * @returns Self
 	 */
 	public invert(): TransformMatrix2D
@@ -283,7 +283,18 @@ export class TransformMatrix2D
 
 		return this;
 	}
-
+	/**
+	 * Apply this transform to a point, essentially getting the points position relative to this transform
+	 * @param vector2 point to transform
+	 * @returns a new vector2 transformed from the original
+	 */
+	public applyPoint(vector2: Vector2) : Vector2
+	{
+		return new Vector2(
+			this.values[0]*vector2.x+this.values[1]*vector2.y+this.values[2],
+			this.values[3]*vector2.x+this.values[4]*vector2.y+this.values[5]
+		);
+	}
 	/**
 	 * 
 	 * @param other The transform to compare to
@@ -357,7 +368,7 @@ export class TransformMatrix2D
 	//#endregion
 	//#region Operations
 	/**
- * Apply a transformation matrix to another matrix.
+ * Apply a transformation matrix to another matrix.  Performs the operation transform * subject
  * @param transform - The transformation matrix to apply.
  * @param subject - The matrix to which the transformation is applied.
  * @returns A new TransformMatrix2D that is the result of the transformation.
@@ -379,13 +390,26 @@ export class TransformMatrix2D
 			m1[6] * m2[2] + m1[7] * m2[5] + m1[8] * m2[8]);
 	}
 	/**
+	 * Apply a transform matrix to a point, essentially getting the points position relative to the transform
+	 * @param transform transform to use 
+	 * @param vector2 point to transform
+	 * @returns a new vector2 transformed from the original
+	 */
+	static ApplyPoint(transform: TransformMatrix2D, vector2: Vector2) : Vector2
+	{
+		return new Vector2(
+			transform.values[0]*vector2.x+transform.values[1]*vector2.y+transform.values[2],
+			transform.values[3]*vector2.x+transform.values[4]*vector2.y+transform.values[5]
+		);
+	}
+	/**
 
 	Calculates the inverse of the given 2D transform matrix.
 	@returns {TransformMatrix2D} The inverse of the current transform matrix.
 	*/
-	static GetInverse(transform: TransformMatrix2D): TransformMatrix2D
+	static Inverse(transform: TransformMatrix2D): TransformMatrix2D
 	{
-		return transform.getInverse();
+		return transform.inverse();
 	}
 	/**
 	 * Check if two transform matrices have the same values

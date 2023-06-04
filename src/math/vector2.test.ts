@@ -37,8 +37,8 @@ function runVectorTests(testData: TestData[]): void
 
 				afterEach(() =>
 				{
-					vector1 = Vector2.zero;
-					vector2 = Vector2.zero;
+					vector1 = Vector2.Zero;
+					vector2 = Vector2.Zero;
 				});
 
 				it("should add two vectors", () =>
@@ -524,8 +524,8 @@ describe("Statics should be properly accessed and not the same reference", () =>
 {
 	it("Should work on the zero vector", () =>
 	{
-		const zero1 = Vector2.zero;
-		const zero2 = Vector2.zero;
+		const zero1 = Vector2.Zero;
+		const zero2 = Vector2.Zero;
 
 		expect(zero1.equals(new Vector2(0, 0))).toBe(true);
 		expect(zero2.equals(new Vector2(0, 0))).toBe(true);
@@ -533,8 +533,8 @@ describe("Statics should be properly accessed and not the same reference", () =>
 	});
 	it("Should work on the left vector", () =>
 	{
-		const left1 = Vector2.left;
-		const left2 = Vector2.left;
+		const left1 = Vector2.Left;
+		const left2 = Vector2.Left;
 
 		expect(left1.equals(new Vector2(-1, 0))).toBe(true);
 		expect(left2.equals(new Vector2(-1, 0))).toBe(true);
@@ -542,8 +542,8 @@ describe("Statics should be properly accessed and not the same reference", () =>
 	});
 	it("Should work on the right vector", () =>
 	{
-		const right1 = Vector2.right;
-		const right2 = Vector2.right;
+		const right1 = Vector2.Right;
+		const right2 = Vector2.Right;
 
 		expect(right1.equals(new Vector2(1, 0))).toBe(true);
 		expect(right2.equals(new Vector2(1, 0))).toBe(true);
@@ -551,8 +551,8 @@ describe("Statics should be properly accessed and not the same reference", () =>
 	});
 	it("Should work on the down vector", () =>
 	{
-		const down1 = Vector2.down;
-		const down2 = Vector2.down;
+		const down1 = Vector2.Down;
+		const down2 = Vector2.Down;
 
 		expect(down1.equals(new Vector2(0, 1))).toBe(true);
 		expect(down2.equals(new Vector2(0, 1))).toBe(true);
@@ -560,8 +560,8 @@ describe("Statics should be properly accessed and not the same reference", () =>
 	});
 	it("Should work on the up vector", () =>
 	{
-		const up1 = Vector2.up;
-		const up2 = Vector2.up;
+		const up1 = Vector2.Up;
+		const up2 = Vector2.Up;
 
 		expect(up1.equals(new Vector2(0, -1))).toBe(true);
 		expect(up2.equals(new Vector2(0, -1))).toBe(true);

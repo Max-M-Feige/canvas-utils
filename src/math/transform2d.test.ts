@@ -113,7 +113,7 @@ describe("TransformMatrix2D", () =>
 			0.2500, 0.2887, -2.000,
 			0.000, 0.000, 1.000];
 		const expectedMatrix = new TransformMatrix2D(...expectedValues);
-		const inverseMatrix = matrix.getInverse();
+		const inverseMatrix = matrix.inverse();
 		expect(inverseMatrix.position.x).toBeCloseTo(expectedMatrix.position.x);
 		expect(inverseMatrix.position.y).toBeCloseTo(expectedMatrix.position.y);
 		expect(inverseMatrix.scale.x).toBeCloseTo(expectedMatrix.scale.x);
@@ -169,14 +169,14 @@ describe("TransformMatrix2D", () =>
 		transform.rotation = Math.PI / 2;
 		transform.scale = new Vector2(4, 5);
 		transform.position = new Vector2(2, 3);
-		const calculatedIdentity = TransformMatrix2D.Apply(transform.getInverse(), transform);
+		const calculatedIdentity = TransformMatrix2D.Apply(transform.inverse(), transform);
 		expect(calculatedIdentity.equals(TransformMatrix2D.Identity)).toBe(true);
 
 	});
 
 	it("Should return 0 on inverse of bad matrix", () =>
 	{
-		const transform = new TransformMatrix2D(1, 2, 3, 4, 5, 6, 7, 8, 9).getInverse();
+		const transform = new TransformMatrix2D(1, 2, 3, 4, 5, 6, 7, 8, 9).inverse();
 		const zero = TransformMatrix2D.Zero;
 		expect(transform.position.x).toBeCloseTo(zero.position.x);
 		expect(transform.position.y).toBeCloseTo(zero.position.y);
@@ -198,7 +198,7 @@ describe("TransformMatrix2D", () =>
 			0.2500, 0.2887, -2.000,
 			0.000, 0.000, 1.000];
 		const expectedMatrix = new TransformMatrix2D(...expectedValues);
-		const inverseMatrix = matrix.getInverse();
+		const inverseMatrix = matrix.inverse();
 		expect(inverseMatrix.position.x).toBeCloseTo(expectedMatrix.position.x);
 		expect(inverseMatrix.position.y).toBeCloseTo(expectedMatrix.position.y);
 		expect(inverseMatrix.scale.x).toBeCloseTo(expectedMatrix.scale.x);
@@ -215,7 +215,7 @@ describe("TransformMatrix2D", () =>
 	});
 	it("Should Statically return 0 on inverse of bad matrix", () =>
 	{
-		const transform = TransformMatrix2D.GetInverse(new TransformMatrix2D(1, 2, 3, 4, 5, 6, 7, 8, 9));
+		const transform = TransformMatrix2D.Inverse(new TransformMatrix2D(1, 2, 3, 4, 5, 6, 7, 8, 9));
 		const zero = TransformMatrix2D.Zero;
 		expect(transform.position.x).toBeCloseTo(zero.position.x);
 		expect(transform.position.y).toBeCloseTo(zero.position.y);

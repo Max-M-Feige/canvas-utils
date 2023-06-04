@@ -1,5 +1,7 @@
 dist
 docs
 node_modules
-jest.config.js
+jest.config.cjs
 coverage
+webpack.config.js
+webpack.config.cjs

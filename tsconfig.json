@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "ES2020",
     "target": "ES2020",
     "outDir": "./dist",
     "lib": ["es5","es6","dom"],
@@ -8,7 +8,10 @@
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "sourceMap": true
   },
   "include": ["src"],
   "exclude": ["node_modules","dist"]
 }
+  

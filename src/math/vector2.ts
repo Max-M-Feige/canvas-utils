@@ -282,10 +282,18 @@ export class Vector2
 		return `(${this._x},${this._y})`;
 	}
 	/**
+	 * Convert number to an array/tuple
+	 * @returns The vector as a two number tuple
+	 */
+	toArray() : [number,number]
+	{
+		return [this._x,this._y];
+	}
+	/**
 	 * Returns a new Vector2 instance initialized to (0, 0).
 	 * @returns {Vector2} A Vector2 instance representing the origin.
 	 */
-	static get zero(): Vector2
+	static get Zero(): Vector2
 	{
 		return new Vector2(0, 0);
 	}
@@ -294,7 +302,7 @@ export class Vector2
 	 * @returns {Vector2} A Vector2 instance representing left direction.
 	 */
 
-	static get left(): Vector2
+	static get Left(): Vector2
 	{
 		return new Vector2(-1, 0);
 	}
@@ -302,7 +310,7 @@ export class Vector2
 	 * Returns a new Vector2 instance initialized to (1, 0).
 	 * @returns {Vector2} A Vector2 instance representing right direction.
 	 */
-	static get right(): Vector2
+	static get Right(): Vector2
 	{
 		return new Vector2(1, 0);
 	}
@@ -310,7 +318,7 @@ export class Vector2
 	 * Returns a new Vector2 instance initialized to (0, -1).
 	 * @returns {Vector2} A Vector2 instance representing up direction.
 	 */
-	static get up(): Vector2
+	static get Up(): Vector2
 	{
 		return new Vector2(0, -1);
 	}
@@ -318,7 +326,7 @@ export class Vector2
 	 * Returns a new Vector2 instance initialized to (0, 1).
 	 * @returns {Vector2} A Vector2 instance representing down direction.
 	 */
-	static get down(): Vector2
+	static get Down(): Vector2
 	{
 		return new Vector2(0, 1);
 	}

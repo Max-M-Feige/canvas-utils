@@ -1,0 +1,19 @@
+html
+{
+	height: 100%;
+}
+
+body
+{
+	display: flex;
+	height: 100%;
+	margin: 0px;
+}
+
+canvas
+{
+	border: 1px solid black;
+	width: 90%;
+	height: 90%;
+	margin: auto;
+}

@@ -30,6 +30,6 @@ export class LinkedVector2 extends Vector2
 	}
 	public toVector2(): Vector2
 	{
-		return this;
+		return new Vector2(this._x, this._y);
 	}
 }
