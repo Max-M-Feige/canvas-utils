@@ -75,12 +75,11 @@ export class CanvasRenderer
 		const rect = this.canvas.getBoundingClientRect();
 		this.canvas.width = rect.width;
 		this.canvas.height = rect.height;
-		this.canvasTransform = Transform2D.FromPosition(new Vector2(-rect.left,-rect.top));
+		const left = Math.round(rect.left), top = Math.round(rect.top), width = Math.round(rect.right)-left, height = Math.round(rect.bottom)-top;
+		this.canvasTransform = Transform2D.FromPosition(new Vector2(Math.round(-left),Math.round(-top)));
 		const worldScale = new Vector2(1/this.pixelsPerUnit ,1/this.pixelsPerUnit);
-		this.worldTransform = Transform2D.FromPosition( new Vector2(-rect.width/2,-rect.height/2));
+		this.worldTransform = Transform2D.FromPosition( new Vector2(-width/2,-height/2));
 		this.worldTransform.applyS(Transform2D.FromScalar(worldScale));
-		console.log(this.canvasTransform.toString());
-		console.log(this.worldTransform.toString());
 
 	}
 }

@@ -1,7 +1,7 @@
 import { Vector2 } from "../src/math/vector2";
 import { CanvasRenderer } from "../src/rendering/canvas";
-import { Scene } from "../src/core/Scene";
-import { Entity } from "../src/core/Entity";
+import { Scene } from "../src/core/scene";
+import { Entity } from "../src/core/entity";
 
 
 const canvas = document.querySelector("canvas") as HTMLCanvasElement;

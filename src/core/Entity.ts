@@ -15,21 +15,21 @@ export class Entity
 		this.parent = null;
 	}
 
-	public update(dt: number) : void
+	public update(dt: number): void
 	{
 
 	}
-	public draw(dt: number) : void
+	public draw(dt: number): void
 	{
 
 	}
-	public getFullTransform() : Transform2D
+	public getFullTransform(): Transform2D
 	{
-		if(this.parent === null)
+		if (this.parent === null)
 		{
 			return this.transform;
 		}
 		return this.parent.getFullTransform().apply(this.transform);
 	}
-	
+
 }
