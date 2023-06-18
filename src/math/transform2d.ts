@@ -10,7 +10,7 @@ export type Matrix3Array = [number, number, number, number, number, number, numb
 /**
  * Represents a 2D transform (position, rotation, scale)
  */
-export class TransformMatrix2D
+export class Transform2D
 {
 	private values: Matrix3Array;
 	private _position: LinkedVector2;
@@ -185,9 +185,9 @@ export class TransformMatrix2D
 	}
 	/**
 	Calculates the inverse of this transform.  To invert in place see {@link invert}
-	@returns {TransformMatrix2D} The inverse of the current transform matrix.
+	@returns {Transform2D} The inverse of the current transform matrix.
 	*/
-	public inverse(): TransformMatrix2D
+	public inverse(): Transform2D
 	{
 		const A: number = this.values[4] * this.values[8] - this.values[5] * this.values[7];
 		const B: number = this.values[5] * this.values[6] - this.values[3] * this.values[8];
@@ -195,7 +195,7 @@ export class TransformMatrix2D
 		const det = this.values[0] * A + this.values[1] * B + this.values[2] * C;
 		if (det === 0)
 		{
-			return new TransformMatrix2D(0, 0, 0, 0, 0, 0, 0, 0, 0);
+			return new Transform2D(0, 0, 0, 0, 0, 0, 0, 0, 0);
 		}
 		const D = this.values[2] * this.values[7] - this.values[1] * this.values[8];
 		const E = this.values[0] * this.values[8] - this.values[2] * this.values[6];
@@ -206,7 +206,7 @@ export class TransformMatrix2D
 		//The mnatrix [A,B,C,D,E,F,G,H,I] is the adj matrix
 		//We want the transpose
 		const detInv = 1 / det;
-		return new TransformMatrix2D(
+		return new Transform2D(
 			detInv * A, detInv * D, detInv * G,
 			detInv * B, detInv * E, detInv * H,
 			detInv * C, detInv * F, detInv * I);
@@ -216,7 +216,7 @@ export class TransformMatrix2D
 	 * Modifies current transform to be its inverse.  To get inverse without changing source see {@link inverse}
 	 * @returns Self
 	 */
-	public invert(): TransformMatrix2D
+	public invert(): Transform2D
 	{
 		const A: number = this.values[4] * this.values[8] - this.values[5] * this.values[7];
 		const B: number = this.values[5] * this.values[6] - this.values[3] * this.values[8];
@@ -252,12 +252,17 @@ export class TransformMatrix2D
 		this.updateAll();
 		return this;
 	}
+	//Creates a new transform, applying the given transform to self
+	public apply(transform: Transform2D) : Transform2D
+	{
+		return Transform2D.Apply(transform,this);
+	}
 	/**
 	 * Modifies the current matrix to be transformed by the given transformation
 	 * @param transformation Transformation to apply to self
 	 * @returns this
 	 */
-	public apply(transform: TransformMatrix2D): TransformMatrix2D
+	public applyS(transform: Transform2D): Transform2D
 	{
 		const m1 = transform.values;
 		const a = m1[0] * this.values[0] + m1[1] * this.values[3] + m1[2] * this.values[6];
@@ -301,7 +306,7 @@ export class TransformMatrix2D
 	 * @param {number} [tolerance=MathU.DefaultErrorMargin] - The tolerance for the comparison
 	 * @returns {boolean} True if the matrices are completely equal
 	 */
-	public equals(other: TransformMatrix2D, tolerance = MathU.DefaultErrorMargin): boolean
+	public equals(other: Transform2D, tolerance = MathU.DefaultErrorMargin): boolean
 	{
 		return this.values.every((val, i) => Math.abs(val - other.values[i]) <= tolerance);
 	}
@@ -314,9 +319,9 @@ export class TransformMatrix2D
  * @param pos - The position for the transformation matrix.
  * @returns A new TransformMatrix2D.
  */
-	static FromPosition(pos: Vector2): TransformMatrix2D
+	static FromPosition(pos: Vector2): Transform2D
 	{
-		return new TransformMatrix2D(1, 0, pos.x, 0, 1, pos.y, 0, 0, 1);
+		return new Transform2D(1, 0, pos.x, 0, 1, pos.y, 0, 0, 1);
 	}
 
 	//TODO: Consider switching constructor/create?
@@ -326,20 +331,20 @@ export class TransformMatrix2D
  * @param theta - The rotation angle in radians.
  * @returns A new TransformMatrix2D.
  */
-	static Create(position: Vector2, rotation: number, scale: Vector2) : TransformMatrix2D
+	static Create(position: Vector2, rotation: number, scale: Vector2) : Transform2D
 	{
 		//TODO: consider performance here?
-		const transform = TransformMatrix2D.Identity;
+		const transform = Transform2D.Identity;
 		transform.position = position;
 		transform.rotation = rotation;
 		transform.scale = scale;
 		return transform;
 	}
-	static FromRotation(theta: number): TransformMatrix2D
+	static FromRotation(theta: number): Transform2D
 	{
 		const cos = Math.cos(theta);
 		const sin = Math.sin(theta);
-		return new TransformMatrix2D(cos, -sin, 0, sin, cos, 0, 0, 0, 1);
+		return new Transform2D(cos, -sin, 0, sin, cos, 0, 0, 0, 1);
 	}
 
 	/**
@@ -347,9 +352,9 @@ export class TransformMatrix2D
    * @param theta - The rotation angle in degrees.
    * @returns A new TransformMatrix2D.
    */
-	static FromRotationDegrees(theta: number): TransformMatrix2D
+	static FromRotationDegrees(theta: number): Transform2D
 	{
-		return TransformMatrix2D.FromRotation(theta * Math.PI / 180);
+		return Transform2D.FromRotation(theta * Math.PI / 180);
 	}
 
 	/**
@@ -357,13 +362,13 @@ export class TransformMatrix2D
    * @param scale - The scale for the transformation matrix. It can be a number or a Vector2.
    * @returns A new TransformMatrix2D.
    */
-	static FromScalar(scale: number | Vector2): TransformMatrix2D
+	static FromScalar(scale: number | Vector2): Transform2D
 	{
 		if (typeof scale === "number")
 		{
-			return new TransformMatrix2D(scale, 0, 0, 0, scale, 0, 0, 0, 1);
+			return new Transform2D(scale, 0, 0, 0, scale, 0, 0, 0, 1);
 		}
-		return new TransformMatrix2D(scale.x, 0, 0, 0, scale.y, 0, 0, 0, 1);
+		return new Transform2D(scale.x, 0, 0, 0, scale.y, 0, 0, 0, 1);
 	}
 	//#endregion
 	//#region Operations
@@ -373,12 +378,12 @@ export class TransformMatrix2D
  * @param subject - The matrix to which the transformation is applied.
  * @returns A new TransformMatrix2D that is the result of the transformation.
  */
-	static Apply(transform: TransformMatrix2D, subject: TransformMatrix2D): TransformMatrix2D
+	static Apply(transform: Transform2D, subject: Transform2D): Transform2D
 	{
 		const m1 = transform.values;
 		const m2 = subject.values;
 
-		return new TransformMatrix2D(
+		return new Transform2D(
 			m1[0] * m2[0] + m1[1] * m2[3] + m1[2] * m2[6],
 			m1[0] * m2[1] + m1[1] * m2[4] + m1[2] * m2[7],
 			m1[0] * m2[2] + m1[1] * m2[5] + m1[2] * m2[8],
@@ -395,7 +400,7 @@ export class TransformMatrix2D
 	 * @param vector2 point to transform
 	 * @returns a new vector2 transformed from the original
 	 */
-	static ApplyPoint(transform: TransformMatrix2D, vector2: Vector2) : Vector2
+	static ApplyPoint(transform: Transform2D, vector2: Vector2) : Vector2
 	{
 		return new Vector2(
 			transform.values[0]*vector2.x+transform.values[1]*vector2.y+transform.values[2],
@@ -405,9 +410,9 @@ export class TransformMatrix2D
 	/**
 
 	Calculates the inverse of the given 2D transform matrix.
-	@returns {TransformMatrix2D} The inverse of the current transform matrix.
+	@returns {Transform2D} The inverse of the current transform matrix.
 	*/
-	static Inverse(transform: TransformMatrix2D): TransformMatrix2D
+	static Inverse(transform: Transform2D): Transform2D
 	{
 		return transform.inverse();
 	}
@@ -418,7 +423,7 @@ export class TransformMatrix2D
 	 * @param {number} [tolerance=MathU.DefaultErrorMargin] - The tolerance for the comparison
 	 * @returns {boolean} true if matrices exactly match
 	 */
-	static Equals(t1: TransformMatrix2D, t2: TransformMatrix2D, tolerance: number = MathU.DefaultErrorMargin): boolean
+	static Equals(t1: Transform2D, t2: Transform2D, tolerance: number = MathU.DefaultErrorMargin): boolean
 	{
 		return t1.values.every((val, i) => Math.abs(val - t2.values[i]) <= tolerance);
 	}
@@ -426,19 +431,19 @@ export class TransformMatrix2D
 
 	/**
 	 * Create an identity transformation matrix.
-	 * @returns {TransformMatrix2D} A New identity TransformMatrix2D.
+	 * @returns {Transform2D} A New identity TransformMatrix2D.
 	 */
-	static get Identity(): TransformMatrix2D
+	static get Identity(): Transform2D
 	{
-		return new TransformMatrix2D(1, 0, 0, 0, 1, 0, 0, 0, 1);
+		return new Transform2D(1, 0, 0, 0, 1, 0, 0, 0, 1);
 	}
 	/**
 	 * Create a 0 transform matrix
-	 * @returns {TransformMatrix2D} a new zero transform
+	 * @returns {Transform2D} a new zero transform
 	 */
-	static get Zero(): TransformMatrix2D
+	static get Zero(): Transform2D
 	{
-		return new TransformMatrix2D(0, 0, 0, 0, 0, 0, 0, 0, 0);
+		return new Transform2D(0, 0, 0, 0, 0, 0, 0, 0, 0);
 	}
 	/**
 	 * 

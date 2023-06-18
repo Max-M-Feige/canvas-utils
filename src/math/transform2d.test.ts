@@ -1,4 +1,4 @@
-import { Matrix3Array, TransformMatrix2D } from "./transform2d";
+import { Matrix3Array, Transform2D } from "./transform2d";
 import { Vector2 } from "./vector2";
 
 describe("TransformMatrix2D", () =>
@@ -7,13 +7,13 @@ describe("TransformMatrix2D", () =>
 	// Check the Identity matrix
 	it("Should generate unique identities", () =>
 	{
-		const identity1 = TransformMatrix2D.Identity;
+		const identity1 = Transform2D.Identity;
 		expect(identity1.position.x).toBeCloseTo(0, 10);
 		expect(identity1.position.y).toBeCloseTo(0, 10);
 		expect(identity1.rotation).toBeCloseTo(0, 10);
 		expect(identity1.scale.x).toBe(1);
 		expect(identity1.scale.y).toBe(1);
-		const identity2 = TransformMatrix2D.Identity;
+		const identity2 = Transform2D.Identity;
 
 		expect(identity1).not.toBe(identity2);
 	});
@@ -22,7 +22,7 @@ describe("TransformMatrix2D", () =>
 	it("Should generate matrix from position", () =>
 	{
 		const pos = new Vector2(2, 3);
-		const matrix = TransformMatrix2D.FromPosition(pos);
+		const matrix = Transform2D.FromPosition(pos);
 		expect(matrix.position.x).toBe(2);
 		expect(matrix.position.y).toBe(3);
 	});
@@ -31,7 +31,7 @@ describe("TransformMatrix2D", () =>
 	it("Should generate matrix from rotation", () =>
 	{
 		const theta = Math.PI / 4;
-		const matrix = TransformMatrix2D.FromRotation(theta);
+		const matrix = Transform2D.FromRotation(theta);
 		expect(matrix.rotation).toBeCloseTo(theta);
 	});
 
@@ -39,7 +39,7 @@ describe("TransformMatrix2D", () =>
 	it("Should generate matrix from degree rotation", () =>
 	{
 		const theta = 45;
-		const matrix = TransformMatrix2D.FromRotationDegrees(theta);
+		const matrix = Transform2D.FromRotationDegrees(theta);
 		expect(matrix.rotation).toBeCloseTo(Math.PI / 4);
 	});
 
@@ -47,13 +47,13 @@ describe("TransformMatrix2D", () =>
 	it("Should generate matrix from scalar", () =>
 	{
 		const scalar = 2;
-		const matrix = TransformMatrix2D.FromScalar(scalar);
+		const matrix = Transform2D.FromScalar(scalar);
 		expect(matrix.scale.x).toBe(scalar);
 		expect(matrix.scale.y).toBe(scalar);
 	});
 	it("Should generate matrix from scaling vector", () =>
 	{
-		const matrix = TransformMatrix2D.FromScalar(new Vector2(1.5, 3));
+		const matrix = Transform2D.FromScalar(new Vector2(1.5, 3));
 		expect(matrix.scale.x).toBe(1.5);
 		expect(matrix.scale.y).toBe(3);
 	});
@@ -63,16 +63,16 @@ describe("TransformMatrix2D", () =>
 		const ROT = -Math.PI / 6;
 		const x_expected = 1.866025404;
 		const y_expected = 1.232050808;
-		const matrixBase = TransformMatrix2D.FromPosition(new Vector2(1, 2));
-		const matrixRot = TransformMatrix2D.FromRotation(ROT);
-		let matrixResult = TransformMatrix2D.Apply(matrixRot, matrixBase);
+		const matrixBase = Transform2D.FromPosition(new Vector2(1, 2));
+		const matrixRot = Transform2D.FromRotation(ROT);
+		let matrixResult = Transform2D.Apply(matrixRot, matrixBase);
 
 		expect(matrixResult.position.x).toBeCloseTo(x_expected);
 		expect(matrixResult.position.y).toBeCloseTo(y_expected);
 		expect(matrixResult.rotation).toBeCloseTo(ROT);
 
-		const matrixScale = TransformMatrix2D.FromScalar(new Vector2(2, 3));
-		matrixResult = TransformMatrix2D.Apply(matrixScale, matrixResult);
+		const matrixScale = Transform2D.FromScalar(new Vector2(2, 3));
+		matrixResult = Transform2D.Apply(matrixScale, matrixResult);
 		expect(matrixResult.position.x).toBeCloseTo(x_expected * 2);
 		expect(matrixResult.position.y).toBeCloseTo(y_expected * 3);
 		expect(matrixResult.rotation).toBeCloseTo(ROT);
@@ -84,16 +84,16 @@ describe("TransformMatrix2D", () =>
 		const ROT = -Math.PI / 6;
 		const x_expected = 1.866025404;
 		const y_expected = 1.232050808;
-		const matrix = TransformMatrix2D.FromPosition(new Vector2(1, 2));
-		const matrixRot = TransformMatrix2D.FromRotation(ROT);
-		matrix.apply(matrixRot);
+		const matrix = Transform2D.FromPosition(new Vector2(1, 2));
+		const matrixRot = Transform2D.FromRotation(ROT);
+		matrix.applyS(matrixRot);
 
 		expect(matrix.position.x).toBeCloseTo(x_expected);
 		expect(matrix.position.y).toBeCloseTo(y_expected);
 		expect(matrix.rotation).toBeCloseTo(ROT);
 
-		const matrixScale = TransformMatrix2D.FromScalar(new Vector2(2, 3));
-		matrix.apply(matrixScale);
+		const matrixScale = Transform2D.FromScalar(new Vector2(2, 3));
+		matrix.applyS(matrixScale);
 		expect(matrix.position.x).toBeCloseTo(x_expected * 2);
 		expect(matrix.position.y).toBeCloseTo(y_expected * 3);
 		expect(matrix.rotation).toBeCloseTo(ROT);
@@ -103,16 +103,16 @@ describe("TransformMatrix2D", () =>
 	it("Should calculate inverse correctly", () =>
 	{
 		const ROT = -Math.PI / 6;
-		const matrix = TransformMatrix2D.FromPosition(new Vector2(1, 2));
-		const matrixRot = TransformMatrix2D.FromRotation(ROT);
-		matrix.apply(matrixRot);
-		const matrixScale = TransformMatrix2D.FromScalar(new Vector2(2, 3));
-		matrix.apply(matrixScale);
+		const matrix = Transform2D.FromPosition(new Vector2(1, 2));
+		const matrixRot = Transform2D.FromRotation(ROT);
+		matrix.applyS(matrixRot);
+		const matrixScale = Transform2D.FromScalar(new Vector2(2, 3));
+		matrix.applyS(matrixScale);
 		const expectedValues: Matrix3Array = [
 			0.4330, -0.1667, -1.000,
 			0.2500, 0.2887, -2.000,
 			0.000, 0.000, 1.000];
-		const expectedMatrix = new TransformMatrix2D(...expectedValues);
+		const expectedMatrix = new Transform2D(...expectedValues);
 		const inverseMatrix = matrix.inverse();
 		expect(inverseMatrix.position.x).toBeCloseTo(expectedMatrix.position.x);
 		expect(inverseMatrix.position.y).toBeCloseTo(expectedMatrix.position.y);
@@ -125,16 +125,16 @@ describe("TransformMatrix2D", () =>
 	it("Should invert correctly", () =>
 	{
 		const ROT = -Math.PI / 6;
-		const matrix = TransformMatrix2D.FromPosition(new Vector2(1, 2));
-		const matrixRot = TransformMatrix2D.FromRotation(ROT);
-		matrix.apply(matrixRot);
-		const matrixScale = TransformMatrix2D.FromScalar(new Vector2(2, 3));
-		matrix.apply(matrixScale);
+		const matrix = Transform2D.FromPosition(new Vector2(1, 2));
+		const matrixRot = Transform2D.FromRotation(ROT);
+		matrix.applyS(matrixRot);
+		const matrixScale = Transform2D.FromScalar(new Vector2(2, 3));
+		matrix.applyS(matrixScale);
 		const expectedValues: Matrix3Array = [
 			0.4330, -0.1667, -1.000,
 			0.2500, 0.2887, -2.000,
 			0.000, 0.000, 1.000];
-		const expectedMatrix = new TransformMatrix2D(...expectedValues);
+		const expectedMatrix = new Transform2D(...expectedValues);
 		matrix.invert();
 		expect(matrix.position.x).toBeCloseTo(expectedMatrix.position.x);
 		expect(matrix.position.y).toBeCloseTo(expectedMatrix.position.y);
@@ -145,8 +145,8 @@ describe("TransformMatrix2D", () =>
 	});
 	it("Should invert to 0 on invalid matrix correctly", () =>
 	{
-		const matrix = new TransformMatrix2D(1,2,3,4,5,6,7,8,9);
-		const expectedMatrix = TransformMatrix2D.Zero;
+		const matrix = new Transform2D(1,2,3,4,5,6,7,8,9);
+		const expectedMatrix = Transform2D.Zero;
 		matrix.invert();
 		expect(matrix.position.x).toBeCloseTo(expectedMatrix.position.x);
 		expect(matrix.position.y).toBeCloseTo(expectedMatrix.position.y);
@@ -157,7 +157,7 @@ describe("TransformMatrix2D", () =>
 	});
 	it("Should be equal to same", () =>
 	{
-		const transform = TransformMatrix2D.Identity;
+		const transform = Transform2D.Identity;
 		transform.rotation = Math.PI / 2;
 		transform.scale = new Vector2(4, 5);
 		transform.position = new Vector2(2, 3);
@@ -165,19 +165,19 @@ describe("TransformMatrix2D", () =>
 	});
 	it("Should result in identity when inverse applied to self", () =>
 	{
-		const transform = TransformMatrix2D.Identity;
+		const transform = Transform2D.Identity;
 		transform.rotation = Math.PI / 2;
 		transform.scale = new Vector2(4, 5);
 		transform.position = new Vector2(2, 3);
-		const calculatedIdentity = TransformMatrix2D.Apply(transform.inverse(), transform);
-		expect(calculatedIdentity.equals(TransformMatrix2D.Identity)).toBe(true);
+		const calculatedIdentity = Transform2D.Apply(transform.inverse(), transform);
+		expect(calculatedIdentity.equals(Transform2D.Identity)).toBe(true);
 
 	});
 
 	it("Should return 0 on inverse of bad matrix", () =>
 	{
-		const transform = new TransformMatrix2D(1, 2, 3, 4, 5, 6, 7, 8, 9).inverse();
-		const zero = TransformMatrix2D.Zero;
+		const transform = new Transform2D(1, 2, 3, 4, 5, 6, 7, 8, 9).inverse();
+		const zero = Transform2D.Zero;
 		expect(transform.position.x).toBeCloseTo(zero.position.x);
 		expect(transform.position.y).toBeCloseTo(zero.position.y);
 		expect(transform.scale.x).toBeCloseTo(zero.scale.x);
@@ -188,16 +188,16 @@ describe("TransformMatrix2D", () =>
 	it("Should statically calculate inverse correctly", () =>
 	{
 		const ROT = -Math.PI / 6;
-		const matrix = TransformMatrix2D.FromPosition(new Vector2(1, 2));
-		const matrixRot = TransformMatrix2D.FromRotation(ROT);
-		matrix.apply(matrixRot);
-		const matrixScale = TransformMatrix2D.FromScalar(new Vector2(2, 3));
-		matrix.apply(matrixScale);
+		const matrix = Transform2D.FromPosition(new Vector2(1, 2));
+		const matrixRot = Transform2D.FromRotation(ROT);
+		matrix.applyS(matrixRot);
+		const matrixScale = Transform2D.FromScalar(new Vector2(2, 3));
+		matrix.applyS(matrixScale);
 		const expectedValues: Matrix3Array = [
 			0.4330, -0.1667, -1.000,
 			0.2500, 0.2887, -2.000,
 			0.000, 0.000, 1.000];
-		const expectedMatrix = new TransformMatrix2D(...expectedValues);
+		const expectedMatrix = new Transform2D(...expectedValues);
 		const inverseMatrix = matrix.inverse();
 		expect(inverseMatrix.position.x).toBeCloseTo(expectedMatrix.position.x);
 		expect(inverseMatrix.position.y).toBeCloseTo(expectedMatrix.position.y);
@@ -207,16 +207,16 @@ describe("TransformMatrix2D", () =>
 	});
 	it("Should Statically be equal to same", () =>
 	{
-		const transform = TransformMatrix2D.Identity;
+		const transform = Transform2D.Identity;
 		transform.rotation = Math.PI / 2;
 		transform.scale = new Vector2(4, 5);
 		transform.position = new Vector2(2, 3);
-		expect(TransformMatrix2D.Equals(transform,transform)).toBe(true);
+		expect(Transform2D.Equals(transform,transform)).toBe(true);
 	});
 	it("Should Statically return 0 on inverse of bad matrix", () =>
 	{
-		const transform = TransformMatrix2D.Inverse(new TransformMatrix2D(1, 2, 3, 4, 5, 6, 7, 8, 9));
-		const zero = TransformMatrix2D.Zero;
+		const transform = Transform2D.Inverse(new Transform2D(1, 2, 3, 4, 5, 6, 7, 8, 9));
+		const zero = Transform2D.Zero;
 		expect(transform.position.x).toBeCloseTo(zero.position.x);
 		expect(transform.position.y).toBeCloseTo(zero.position.y);
 		expect(transform.scale.x).toBeCloseTo(zero.scale.x);
@@ -227,7 +227,7 @@ describe("TransformMatrix2D", () =>
 	// Check the set position, rotation and scale methods
 	it("Should set vector values correctly", () =>
 	{
-		const matrix = TransformMatrix2D.Identity;
+		const matrix = Transform2D.Identity;
 		matrix.position = new Vector2(3, 4);
 		matrix.rotation = Math.PI / 2;
 		matrix.scale = new Vector2(2, 3);
@@ -240,7 +240,7 @@ describe("TransformMatrix2D", () =>
 	});
 	it("Should set vector values from 0 correctly", () =>
 	{
-		const matrix = TransformMatrix2D.Identity;
+		const matrix = Transform2D.Identity;
 		matrix.scale = new Vector2(0, 0);
 
 		const rot = Math.PI / 8;
@@ -257,7 +257,7 @@ describe("TransformMatrix2D", () =>
 	});
 	it("Should set vector values components correctly", () =>
 	{
-		const matrix = TransformMatrix2D.Identity;
+		const matrix = Transform2D.Identity;
 		matrix.position.x = 3;
 		matrix.position.y = 4;
 		matrix.scale.x = 2;
@@ -270,7 +270,7 @@ describe("TransformMatrix2D", () =>
 	});
 	it("Should set vector values components from 0 correctly", () =>
 	{
-		const matrix = TransformMatrix2D.Identity;
+		const matrix = Transform2D.Identity;
 		matrix.scale.x = 0;
 		matrix.scale.y = 0;
 
@@ -291,7 +291,7 @@ describe("TransformMatrix2D", () =>
 	// Check the toString method
 	it("Should convert to string properly", () =>
 	{
-		const matrix = TransformMatrix2D.FromPosition(new Vector2(1, 2));
+		const matrix = Transform2D.FromPosition(new Vector2(1, 2));
 		const str = matrix.toString();
 		expect(str).toBe("[1,0,1],\n[0,1,2],\n[0,0,1],");
 	});

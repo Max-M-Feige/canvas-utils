@@ -43,14 +43,14 @@ function runVectorTests(testData: TestData[]): void
 
 				it("should add two vectors", () =>
 				{
-					vector1.add(vector2);
+					vector1.addS(vector2);
 					expect(vector1.x).toBeCloseTo(data.results.add.x, 5);
 					expect(vector1.y).toBeCloseTo(data.results.add.y, 5);
 				});
 
 				it("should subtract two vectors", () =>
 				{
-					vector1.subtract(vector2);
+					vector1.subtractS(vector2);
 
 					expect(vector1.x).toBeCloseTo(data.results.subtract.x, 5);
 					expect(vector1.y).toBeCloseTo(data.results.subtract.y, 5);
@@ -58,7 +58,7 @@ function runVectorTests(testData: TestData[]): void
 
 				it("should multiply a vector by a scalar", () =>
 				{
-					vector1.multiply(data.results.multiply.scalar);
+					vector1.multiplyS(data.results.multiply.scalar);
 
 					expect(vector1.x).toBeCloseTo(data.results.multiply.vector.x, 5);
 					expect(vector1.y).toBeCloseTo(data.results.multiply.vector.y, 5);
@@ -66,7 +66,7 @@ function runVectorTests(testData: TestData[]): void
 
 				it("should divide a vector by a scalar", () =>
 				{
-					vector1.divide(data.results.divide.scalar);
+					vector1.divideS(data.results.divide.scalar);
 
 					expect(vector1.x).toBeCloseTo(data.results.divide.vector.x);
 					expect(vector1.y).toBeCloseTo(data.results.divide.vector.y);
@@ -74,7 +74,7 @@ function runVectorTests(testData: TestData[]): void
 
 				it("should calculate the minimum components between two vectors", () =>
 				{
-					vector1.min(vector2);
+					vector1.minS(vector2);
 
 					expect(vector1.x).toBe(data.results.min.x);
 					expect(vector1.y).toBe(data.results.min.y);
@@ -82,7 +82,7 @@ function runVectorTests(testData: TestData[]): void
 
 				it("should calculate the maximum components between two vectors", () =>
 				{
-					vector1.max(vector2);
+					vector1.maxS(vector2);
 
 					expect(vector1.x).toBe(data.results.max.x);
 					expect(vector1.y).toBe(data.results.max.y);
@@ -111,7 +111,7 @@ function runVectorTests(testData: TestData[]): void
 
 				it("should calculate the perpendicular vector", () =>
 				{
-					const perpendicularVector = vector1.perpendicularize();
+					const perpendicularVector = vector1.perpendicularizeS();
 
 					expect(perpendicularVector.x).toBeCloseTo(data.results.perpendicularize.x, 5);
 					expect(perpendicularVector.y).toBeCloseTo(data.results.perpendicularize.y, 5);
@@ -149,7 +149,7 @@ function runVectorTests(testData: TestData[]): void
 				});
 				it("should perform linear interpolation between two vectors", () =>
 				{
-					const interpolatedVector = vector1.lerp(vector2, data.results.lerp.scalar);
+					const interpolatedVector = vector1.lerpS(vector2, data.results.lerp.scalar);
 
 					expect(interpolatedVector.x).toBeCloseTo(data.results.lerp.vector.x, 5);
 					expect(interpolatedVector.y).toBeCloseTo(data.results.lerp.vector.y, 5);
@@ -594,8 +594,8 @@ describe("Random Generation Should Make Sense For Squares", () =>
 {
 	it("Square should have 0 average", () =>
 	{
-		const avg: Vector2 = sq_vectors.reduce((accumulator, current) => accumulator.add(current), new Vector2(0, 0));
-		avg.divide(NUM_RANDOM_TESTS);
+		const avg: Vector2 = sq_vectors.reduce((accumulator, current) => accumulator.addS(current), new Vector2(0, 0));
+		avg.divideS(NUM_RANDOM_TESTS);
 		expect(Math.abs(avg.x)).toBeLessThan(1.0 - TOLERANCE);
 		expect(Math.abs(avg.y)).toBeLessThan(1.0 - TOLERANCE);
 	});
@@ -619,8 +619,8 @@ describe("Random Generation Should Make Sense For On Circles", () =>
 {
 	it("Square should have 0 average", () =>
 	{
-		const avg: Vector2 = on_circ_vectors.reduce((accumulator, current) => accumulator.add(current), new Vector2(0, 0));
-		avg.divide(NUM_RANDOM_TESTS);
+		const avg: Vector2 = on_circ_vectors.reduce((accumulator, current) => accumulator.addS(current), new Vector2(0, 0));
+		avg.divideS(NUM_RANDOM_TESTS);
 		expect(Math.abs(avg.x)).toBeLessThan(1.0 - TOLERANCE);
 		expect(Math.abs(avg.y)).toBeLessThan(1.0 - TOLERANCE);
 	});
@@ -644,8 +644,8 @@ describe("Random Generation Should Make Sense For In Circles", () =>
 {
 	it("Square should have 0 average", () =>
 	{
-		const avg: Vector2 = in_circ_vectors.reduce((accumulator, current) => accumulator.add(current), new Vector2(0, 0));
-		avg.divide(NUM_RANDOM_TESTS);
+		const avg: Vector2 = in_circ_vectors.reduce((accumulator, current) => accumulator.addS(current), new Vector2(0, 0));
+		avg.divideS(NUM_RANDOM_TESTS);
 		expect(Math.abs(avg.x)).toBeLessThan(1.0 - TOLERANCE);
 		expect(Math.abs(avg.y)).toBeLessThan(1.0 - TOLERANCE);
 	});

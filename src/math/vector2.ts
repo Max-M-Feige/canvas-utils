@@ -55,34 +55,46 @@ export class Vector2
 	{
 		this._y = val;
 	}
+	add(other: Vector2): Vector2
+	{
+		return Vector2.Add(this, other);
+	}
 	/**
 	 * Add another vector to this vector
 	 * @param {Vector2} other - The other vector
 	 * @returns {Vector2} The modified original vector
 	 */
-	add(other: Vector2): Vector2
+	addS(other: Vector2): Vector2
 	{
 		this.x += other.x;
 		this.y += other.y;
 		return this;
+	}
+	subtract(other: Vector2): Vector2
+	{
+		return Vector2.Subtract(this, other);
 	}
 	/**
 	 * Subtract another vector from this vector
 	 * @param {Vector2} other - The other vector
 	 * @returns {Vector2} The modified original vector
 	 */
-	subtract(other: Vector2): Vector2
+	subtractS(other: Vector2): Vector2
 	{
 		this.x -= other.x;
 		this.y -= other.y;
 		return this;
+	}
+	multiply(value: number | Vector2): Vector2
+	{
+		return Vector2.Multiply(this, value);
 	}
 	/**
 	 * Multiply this vector by a scalar or another vector
 	 * @param {number | Vector2} value - The scalar or vector to multiply by
 	 * @returns {Vector2} The modified original vector
 	 */
-	multiply(value: number | Vector2): Vector2
+	multiplyS(value: number | Vector2): Vector2
 	{
 		if (typeof value === "number")
 		{
@@ -94,12 +106,16 @@ export class Vector2
 		this.y *= value.y;
 		return this;
 	}
+	divide(value: number | Vector2): Vector2
+	{
+		return Vector2.Divide(this,value);
+	}
 	/**
 	 * Divide this vector by a scalar or another vector
 	 * @param {number | Vector2} value - The scalar or vector to divide by
 	 * @returns {Vector2} The modified original vector
 	 */
-	divide(value: number | Vector2): Vector2
+	divideS(value: number | Vector2): Vector2
 	{
 		if (typeof value === "number")
 		{
@@ -111,23 +127,31 @@ export class Vector2
 		this.y /= value.y;
 		return this;
 	}
+	min(other: Vector2): Vector2
+	{
+		return Vector2.Max(this, other);
+	}
 	/**
 	 * Set the components of this vector to the minimum of their current values and the corresponding values of another vector
 	 * @param {Vector2} other - The other vector
 	 * @returns {Vector2} The modified original vector
 	 */
-	min(other: Vector2): Vector2
+	minS(other: Vector2): Vector2
 	{
 		this.x = Math.min(this.x, other.x);
 		this.y = Math.min(this.y, other.y);
 		return this;
+	}
+	max(other: Vector2): Vector2
+	{
+		return Vector2.Max(this, other);
 	}
 	/**
 	 * Set the components of this vector to the maximum of their current values and the corresponding values of another vector
 	 * @param {Vector2} other - The other vector
 	 * @returns {Vector2} The modified original vector
 	 */
-	max(other: Vector2): Vector2
+	maxS(other: Vector2): Vector2
 	{
 		this.x = Math.max(this.x, other.x);
 		this.y = Math.max(this.y, other.y);
@@ -163,12 +187,16 @@ export class Vector2
 	 * Perpendicularizes the vector
 	 * @returns {Vector2} The modified original vector
 	 */
-	perpendicularize(): Vector2
+	perpendicularizeS(): Vector2
 	{
 		const tmp = this.x;
 		this.x = -this.y;
 		this.y = tmp;
 		return this;
+	}
+	perpendicularize(): Vector2
+	{
+		return new Vector2(-this.y, this.x);
 	}
 	/**
 	 * Calculates the angle between this vector and the x-axis
@@ -221,13 +249,17 @@ export class Vector2
 		return dx * dx + dy * dy;
 	}
 
+	lerp(other: Vector2, t: number): Vector2
+	{
+		return Vector2.Lerp(this, other, t);
+	}
 	/**
 	 * Performs a linear interpolation between this vector and another vector
 	 * @param {Vector2} other - The other vector
 	 * @param {number} t - The interpolation factor
 	 * @returns {Vector2} The modified original vector
 	 */
-	lerp(other: Vector2, t: number): Vector2
+	lerpS(other: Vector2, t: number): Vector2
 	{
 		this.x = this.x + (other.x - this.x) * t;
 		this.y = this.y + (other.y - this.y) * t;
@@ -285,9 +317,9 @@ export class Vector2
 	 * Convert number to an array/tuple
 	 * @returns The vector as a two number tuple
 	 */
-	toArray() : [number,number]
+	toArray(): [number, number]
 	{
-		return [this._x,this._y];
+		return [this._x, this._y];
 	}
 	/**
 	 * Returns a new Vector2 instance initialized to (0, 0).
@@ -505,7 +537,7 @@ export class Vector2
 	 */
 	static Lerp(v1: Vector2, v2: Vector2, t: number): Vector2
 	{
-		return this.Add(v1, this.Subtract(v2, v1).multiply(t));
+		return this.Add(v1, this.Subtract(v2, v1).multiplyS(t));
 	}
 	/**
 	 * Generates a random vector within a square of side length 2, centered at the origin.

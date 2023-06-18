@@ -1,12 +1,12 @@
-import { TransformMatrix2D } from "../math/transform2d";
+import { Transform2D } from "../math/transform2d";
 import { Vector2 } from "../math/vector2";
 
 export class CanvasRenderer
 {
 	
 	private ctx: CanvasRenderingContext2D;
-	private canvasTransform: TransformMatrix2D = TransformMatrix2D.Identity;
-	private worldTransform: TransformMatrix2D = TransformMatrix2D.Identity;
+	private canvasTransform: Transform2D = Transform2D.Identity;
+	private worldTransform: Transform2D = Transform2D.Identity;
 	constructor(private canvas: HTMLCanvasElement, private pixelsPerUnit: number = 100)
 	{
 		const maybeContext = canvas.getContext("2d");
@@ -23,31 +23,31 @@ export class CanvasRenderer
 
 	public tWindowToCanvas(point: Vector2) : Vector2
 	{
-		return TransformMatrix2D.ApplyPoint(this.canvasTransform,point);
+		return Transform2D.ApplyPoint(this.canvasTransform,point);
 	}
 	public tWindowToWorld(point: Vector2) : Vector2
 	{
-		return TransformMatrix2D.ApplyPoint(TransformMatrix2D.Apply(this.worldTransform,this.canvasTransform),point);
+		return Transform2D.ApplyPoint(Transform2D.Apply(this.worldTransform,this.canvasTransform),point);
 	}
 	public tCanvasToWorld(point: Vector2) : Vector2
 	{
-		return TransformMatrix2D.ApplyPoint(this.worldTransform,point);
+		return Transform2D.ApplyPoint(this.worldTransform,point);
 	}
 	public tCanvasToWindow(point: Vector2) : Vector2
 	{
-		const inverseCanvasTransform = TransformMatrix2D.Inverse(this.canvasTransform);
+		const inverseCanvasTransform = Transform2D.Inverse(this.canvasTransform);
 		return inverseCanvasTransform.applyPoint(point);
 	}
 	public tWorldToCanvas(point: Vector2) : Vector2
 	{
-		const inverseWorldTransform = TransformMatrix2D.Inverse(this.worldTransform);
+		const inverseWorldTransform = Transform2D.Inverse(this.worldTransform);
 		return inverseWorldTransform.applyPoint(point);
 	}
 	public tWorldToWindow(point: Vector2) : Vector2
 	{
-		const inverseCanvasTransform = TransformMatrix2D.Inverse(this.canvasTransform);
-		const inverseWorldTransform = TransformMatrix2D.Inverse(this.worldTransform);
-		return TransformMatrix2D.ApplyPoint(TransformMatrix2D.Apply(inverseCanvasTransform,inverseWorldTransform),point);
+		const inverseCanvasTransform = Transform2D.Inverse(this.canvasTransform);
+		const inverseWorldTransform = Transform2D.Inverse(this.worldTransform);
+		return Transform2D.ApplyPoint(Transform2D.Apply(inverseCanvasTransform,inverseWorldTransform),point);
 	}
 
 
@@ -71,14 +71,14 @@ export class CanvasRenderer
 
 	private _onCanvasResize() : void
 	{
-		this.canvasTransform = TransformMatrix2D.Identity;
+		this.canvasTransform = Transform2D.Identity;
 		const rect = this.canvas.getBoundingClientRect();
 		this.canvas.width = rect.width;
 		this.canvas.height = rect.height;
-		this.canvasTransform = TransformMatrix2D.FromPosition(new Vector2(-rect.left,-rect.top));
+		this.canvasTransform = Transform2D.FromPosition(new Vector2(-rect.left,-rect.top));
 		const worldScale = new Vector2(1/this.pixelsPerUnit ,1/this.pixelsPerUnit);
-		this.worldTransform = TransformMatrix2D.FromPosition( new Vector2(-rect.width/2,-rect.height/2));
-		this.worldTransform.apply(TransformMatrix2D.FromScalar(worldScale));
+		this.worldTransform = Transform2D.FromPosition( new Vector2(-rect.width/2,-rect.height/2));
+		this.worldTransform.applyS(Transform2D.FromScalar(worldScale));
 		console.log(this.canvasTransform.toString());
 		console.log(this.worldTransform.toString());
 
