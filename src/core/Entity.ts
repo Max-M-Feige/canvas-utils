@@ -7,11 +7,12 @@ export class Entity
 {
 	public transform: Transform2D;
 	public z_index: number;
-
+	public parent: Entity | null;
 	constructor()
 	{
 		this.transform = Transform2D.Identity;
 		this.z_index = 0;
+		this.parent = null;
 	}
 
 	public update(dt: number) : void
@@ -21,6 +22,14 @@ export class Entity
 	public draw(dt: number) : void
 	{
 
+	}
+	public getFullTransform() : Transform2D
+	{
+		if(this.parent === null)
+		{
+			return this.transform;
+		}
+		return this.parent.getFullTransform().apply(this.transform);
 	}
 	
 }

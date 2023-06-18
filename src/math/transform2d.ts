@@ -252,7 +252,12 @@ export class Transform2D
 		this.updateAll();
 		return this;
 	}
-	//Creates a new transform, applying the given transform to self
+	/**
+	 * Creates a new transform, applying the argument to itself.  Equivalent to
+	 * transform * this;
+	 * @param transform 
+	 * @returns 
+	 */
 	public apply(transform: Transform2D) : Transform2D
 	{
 		return Transform2D.Apply(transform,this);
